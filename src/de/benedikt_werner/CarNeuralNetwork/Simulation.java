@@ -1,5 +1,6 @@
 package de.benedikt_werner.CarNeuralNetwork;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,11 +9,12 @@ public class Simulation {
     private boolean isRunning = true;
     private int framePause = 10;
     private GUI gui = null;
-    private Track track;
+    private Track track = null;
 
     public static void main(String[] args) throws InterruptedException {
         Simulation simulation = new Simulation();
         simulation.addGameObject(new Car());
+        simulation.setTrack(Track.loadFromFile(new File("D:\\dev\\workspace\\NeuralNetworkCars\\track.txt"), 500, 500));
 
         GUI gui = new GUI(simulation);
         gui.setVisible(true);
@@ -47,5 +49,11 @@ public class Simulation {
 
     public void setGui(GUI newGUI) {
         gui = newGUI;
+    }
+    
+    public void setTrack(Track newTrack) {
+        if (track != null) removeGameObject(track);
+        track = newTrack;
+        addGameObject(track);
     }
 }
