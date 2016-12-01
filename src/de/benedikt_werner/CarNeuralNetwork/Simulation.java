@@ -13,8 +13,9 @@ public class Simulation {
 
     public static void main(String[] args) throws InterruptedException {
         Simulation simulation = new Simulation();
-        simulation.addGameObject(new Car());
-        simulation.setTrack(Track.loadFromFile(new File("D:\\dev\\workspace\\NeuralNetworkCars\\track.txt"), 500, 500));
+        Track track = Track.loadFromFile(new File("C:\\dev\\workspace\\NeuralNetworkCars\\track.txt"), 500, 500);
+        simulation.addGameObject(new Car(track));
+        simulation.setTrack(track);
 
         GUI gui = new GUI(simulation);
         gui.setVisible(true);
