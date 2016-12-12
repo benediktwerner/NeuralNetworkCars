@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel {
+
     private static final long serialVersionUID = -4562684701500546351L;
     private Simulation simulation;
 

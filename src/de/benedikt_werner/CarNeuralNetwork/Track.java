@@ -20,6 +20,50 @@ public class Track extends GameObject {
         return loadFromFile(file, 0, 0);
     }
 
+    public void draw(Graphics2D g2d) {
+        for (int i = 0; i < track[0].length - 1; i++) {
+            Point left1 = track[0][i];
+            Point left2 = track[0][i+1];
+            g2d.drawLine(left1.x, left1.y, left2.x, left2.y);
+            Point right1 = track[1][i];
+            Point right2 = track[1][i+1];
+            g2d.drawLine(right1.x, right1.y, right2.x, right2.y);
+        }
+
+        Color c = g2d.getColor();
+        g2d.setColor(Color.LIGHT_GRAY);
+        for (int i = 1; i < track[0].length; i++) {
+            Point left = track[0][i];
+            Point right = track[1][i];
+            g2d.drawLine(left.x, left.y, right.x, right.y);
+        }
+        g2d.setColor(c);
+    }
+    
+    public boolean checkWallCollision(Point pos, int r) {
+        for (int i = 1; i < track[0].length; i++) {
+            if (Utils.checkCollisionCircle(track[0][i-1], track[0][i], pos, r)) return true;
+            if (Utils.checkCollisionCircle(track[1][i-1], track[1][i], pos, r)) return true;
+        }
+        return false;
+    }
+    
+    public boolean checkCheckpointCollision(Point pos, int r, int currCheckpoint) {
+        if (currCheckpoint >= track[0].length-1) return false;
+        return Utils.checkCollisionCircle(track[0][currCheckpoint+1], track[1][currCheckpoint+1], pos, r);
+    }
+    
+    public Point getSensorPoint(Point pos, Point end) {
+        for (int i = 1; i < track[0].length; i++) {
+            Utils.IntersectionInfo info;
+            info = Utils.intersect(track[0][i-1], track[0][i], pos, end);
+            if (info.intersect) return info.intersectionPoint;
+            info = Utils.intersect(track[1][i-1], track[1][i], pos, end);
+            if (info.intersect) return info.intersectionPoint;
+        }
+        return end;
+    }
+
     public static Track loadFromFile(File file, int moveX, int moveY) {
         LinkedList<Point> leftSide = new LinkedList<>();
         LinkedList<Point> rightSide = new LinkedList<>();
@@ -54,25 +98,5 @@ public class Track extends GameObject {
         trackPoints[0] = leftSide.toArray(trackPoints[0]);
         trackPoints[1] = rightSide.toArray(trackPoints[1]);
         return new Track(trackPoints);
-    }
-
-    public void draw(Graphics2D g2d) {
-        for (int i = 0; i < track[0].length - 1; i++) {
-            Point left1 = track[0][i];
-            Point left2 = track[0][i+1];
-            g2d.drawLine(left1.x, left1.y, left2.x, left2.y);
-            Point right1 = track[1][i];
-            Point right2 = track[1][i+1];
-            g2d.drawLine(right1.x, right1.y, right2.x, right2.y);
-        }
-
-        Color c = g2d.getColor();
-        g2d.setColor(Color.LIGHT_GRAY);
-        for (int i = 1; i < track[0].length; i++) {
-            Point left = track[0][i];
-            Point right = track[1][i];
-            g2d.drawLine(left.x, left.y, right.x, right.y);
-        }
-        g2d.setColor(c);
     }
 }

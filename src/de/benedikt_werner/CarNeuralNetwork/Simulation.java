@@ -13,7 +13,7 @@ public class Simulation {
 
     public static void main(String[] args) throws InterruptedException {
         Simulation simulation = new Simulation();
-        Track track = Track.loadFromFile(new File("C:\\dev\\workspace\\NeuralNetworkCars\\track.txt"), 500, 500);
+        Track track = Track.loadFromFile(new File("C:\\dev\\workspace\\NeuralNetworkCars\\track.txt"), 250, 250);
         simulation.addGameObject(new Car(track));
         simulation.setTrack(track);
 
